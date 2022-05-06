@@ -27,7 +27,7 @@ public class CalculateEquilibrium {
 	}
 
 
-	private IndexDataBean mapToIndexData(List<Integer> array, AtomicInteger position) {
+	public IndexDataBean mapToIndexData(List<Integer> array, AtomicInteger position) {
 
 		int p = position.getAndIncrement();
 		List<Integer> left = getSubList(array, 0, p);
@@ -48,7 +48,7 @@ public class CalculateEquilibrium {
 	 *  return sublista -> si el indice dado es 0 (primero) o array.size (último),
 	 *  retorna lista vacia puesto que no tiene elementos a la izq o der.
 	 */
-	private List<Integer> getSubList(List<Integer> array, int from, int to) {
+	public List<Integer> getSubList(List<Integer> array, int from, int to) {
 		try {
 			return array.stream().skip(from).limit(to).collect(Collectors.toList());
 		} catch (Exception e) {
