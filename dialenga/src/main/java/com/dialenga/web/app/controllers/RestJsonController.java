@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dialenga.web.app.core.CalculateEquilibrium;
 import com.dialenga.web.app.models.EquilibriumBean;
 import com.dialenga.web.app.models.IndexDataBean;
+import com.dialenga.web.app.service.EquilibriumService;
 import com.dialenga.web.app.service.IEquilibriumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,8 +33,8 @@ public class RestJsonController {
 //	@Autowired
 //	private IFindEquilibrium feq = new FindEquilibrium();
 	
-	@Autowired 
-	private IEquilibriumService service;
+	//@Autowired 
+	private EquilibriumService service = new EquilibriumService();
     
     @GetMapping("equilibrium/{param}")
     public String getEquilibriumParallel(@PathVariable("param") String param) {
@@ -48,7 +49,7 @@ public class RestJsonController {
 	         Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
 	        		+ " Duración getEquilibriumParallel to process " +arrays.size()+ "arrays -> microsec = " + fTime 
 	        		+ " -> ms = " + fTime / 1000);
-	         eqbList.stream().forEach(eqb->service.save(eqb));
+	         //eqbList.stream().forEach(eqb->service.save(eqb));
 			 return objectMapper.writeValueAsString(eqbList);
 	
 		} catch (RuntimeException e) {
@@ -63,11 +64,11 @@ public class RestJsonController {
     }
     
     
-    @GetMapping("equilibrium/getall")
-    public List<EquilibriumBean> getAllEquilibriumIndex() {
-    	return service.getAll();
-
-    }
+//    @GetMapping("equilibrium/getall")
+//    public List<EquilibriumBean> getAllEquilibriumIndex() {
+//    	return service.getAll();
+//
+//    }
     
     
     public List<EquilibriumBean> getEquilibriumOnebyOne(@PathVariable("param") String param) {
