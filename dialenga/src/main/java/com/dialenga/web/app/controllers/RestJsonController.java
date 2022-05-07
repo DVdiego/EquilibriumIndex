@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dialenga.web.app.core.CalculateEquilibrium;
 import com.dialenga.web.app.models.EquilibriumBean;
+import com.dialenga.web.app.models.IndexDataBean;
+import com.dialenga.web.app.service.IEquilibriumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
@@ -25,7 +28,12 @@ public class RestJsonController {
 	
 	public static final String ERROR = "EquilibriumIndexError: ";
 	private ObjectMapper objectMapper = new ObjectMapper();
-	   
+	
+//	@Autowired
+//	private IFindEquilibrium feq = new FindEquilibrium();
+	
+	@Autowired 
+	private IEquilibriumService service;
     
     @GetMapping("equilibrium/{param}")
     public String getEquilibriumParallel(@PathVariable("param") String param) {
@@ -36,12 +44,12 @@ public class RestJsonController {
     		 String[] split = param.replace(" ", "").split(":");
     		 List<String> arrays = Arrays.asList(split);
     		 arrays.parallelStream().forEach(array -> eqbList.add(processArray(array)));
-	        final long fTime = (System.nanoTime() - iTime) / 1000;
-	        Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
-	        		+ " Duración getEquilibrium to process " +arrays.size()+ "arrays -> microsec = " + fTime 
+	         final long fTime = (System.nanoTime() - iTime) / 1000;
+	         Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
+	        		+ " Duración getEquilibriumParallel to process " +arrays.size()+ "arrays -> microsec = " + fTime 
 	        		+ " -> ms = " + fTime / 1000);
-
-			return objectMapper.writeValueAsString(eqbList);
+	         eqbList.stream().forEach(eqb->service.save(eqb));
+			 return objectMapper.writeValueAsString(eqbList);
 	
 		} catch (RuntimeException e) {
 			error = ERROR + e.getLocalizedMessage();
@@ -50,8 +58,17 @@ public class RestJsonController {
     		error = ERROR + e.getLocalizedMessage();
 			Logger.getGlobal().warning(e.getMessage());
 		}
+    	
 		return error;
     }
+    
+    
+    @GetMapping("equilibrium/getall")
+    public List<EquilibriumBean> getAllEquilibriumIndex() {
+    	return service.getAll();
+
+    }
+    
     
     public List<EquilibriumBean> getEquilibriumOnebyOne(@PathVariable("param") String param) {
     	final long iTime = System.nanoTime();
@@ -78,8 +95,13 @@ public class RestJsonController {
         			.map(String::trim)
         			.map(Integer::valueOf)
         			.collect(Collectors.toList()));
-        CalculateEquilibrium ce = new CalculateEquilibrium();
-        EquilibriumBean eqb = new EquilibriumBean(new Date(), integers, ce.getEquilibriumIndex(integers));
+        CalculateEquilibrium feq = new CalculateEquilibrium();
+        List<IndexDataBean> idb = feq.getEquilibriumIndex(integers);
+        String equilibriumIndices = idb.stream().map(i->String.valueOf(i.getEquilibriumIndex())).collect(Collectors.joining(","));
+
+        EquilibriumBean eqb = new EquilibriumBean(new Date(), integers.toString(), equilibriumIndices);
+
+//      EquilibriumBean eqb = new EquilibriumBean(new Date(), integers, ce.getEquilibriumIndex(integers));
 //      final long fTime = (System.nanoTime() - iTime) / 1000;
 //      Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
 //        		+ " Duración processArray " + integers 
@@ -87,7 +109,8 @@ public class RestJsonController {
 //        		+ " -> ms = " + fTime / 1000);
         return eqb;
 	}
-    
+
+
     /**REST PERFORMANCE**/
     @GetMapping("/debug/loadtesting/{arraySize}")
     public List<EquilibriumBean> debug(@PathVariable("arraySize") int arraySize) {
