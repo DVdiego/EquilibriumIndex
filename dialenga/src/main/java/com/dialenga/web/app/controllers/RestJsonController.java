@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import com.dialenga.web.app.core.CalculateEquilibrium;
 import com.dialenga.web.app.models.EquilibriumBean;
 import com.dialenga.web.app.models.IndexDataBean;
 import com.dialenga.web.app.service.EquilibriumService;
-import com.dialenga.web.app.service.IEquilibriumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
