@@ -39,35 +39,19 @@ public class EquilibriumBean {
 	@JsonProperty("array_enteros")
 	@Column(name = "array_enteros", nullable = false)
 	private String arrayIntegers;
-	//private List<Integer> arrayIntegers = new ArrayList<>();
 
 
 	@JsonProperty("indices_equilibrio")
-	//@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
 	@JsonFormat
 	@Column(name = "indices_equilibrio", nullable = false)
 	private String equilibriumIndices;
-	//private List<IndexDataBean> equilibriumIndices = new ArrayList<>();
 
 
 	public EquilibriumBean(Date date, String arrayIntegers, String equilibriumIndices) {
 		this.date = date;
 		this.arrayIntegers = arrayIntegers;
 		this.equilibriumIndices = equilibriumIndices;
-//		this.arrayIntegers.addAll(arrayIntegers);
-//		this.equilibriumIndices.addAll(equilibriumIndices);
 	}
-
-	
-
-//	public List<Integer> getArray() {
-//		return arrayIntegers;
-//	}
-//
-//
-//	public List<IndexDataBean> getEquilibriumIndices() {
-//		return equilibriumIndices;
-//	}
 
 	@Tolerate
 	public EquilibriumBean() {

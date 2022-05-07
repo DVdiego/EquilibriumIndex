@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 @RequestMapping(path="/json", produces="application/json")
 @CrossOrigin(origins="*")
-public class RestJsonDebugController {
+public class RestJsonControllerIntegration {
 	
 	public static final String ERROR = "EquilibriumIndexError: ";
 	private ObjectMapper objectMapper = new ObjectMapper();

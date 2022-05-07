@@ -28,7 +28,6 @@ import com.dialenga.web.app.service.IEquilibriumService;
 @CrossOrigin(origins="*")
 public class EquilibriumRestController {
 	
-	
 	@Autowired 
 	private IEquilibriumService service;
     
@@ -66,7 +65,7 @@ public class EquilibriumRestController {
    		 	if (eqbList.isEmpty()) {
    		 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
    		 	}
-//   		 	eqbList.stream().forEach(eqb->service.save(eqb));
+
    		 	return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
 		} catch (Exception e) {
 			Logger.getGlobal().warning(e.getMessage());
