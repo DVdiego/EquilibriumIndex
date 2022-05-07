@@ -22,6 +22,8 @@ driverClassName=org.h2.Driver
 username=sa
 password=password
 
+Ejemplo:
+http://localhost:8080/json/equilibrium/-7,1,5,2,-4,3,0:0,-4,7,-4,-2,6,-3,0
 
 Rutas API Pruebas rendimiento e integración:
 
