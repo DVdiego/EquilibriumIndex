@@ -20,6 +20,11 @@ import com.dialenga.web.app.models.EquilibriumBean;
 import com.dialenga.web.app.models.IndexDataBean;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * REST para pruebas de integración,tambien para depurar y optimizar el código
+ * @author daborjaf
+ *
+ */
 @RestController
 @RequestMapping(path="/json", produces="application/json")
 @CrossOrigin(origins="*")
@@ -87,7 +92,6 @@ public class RestJsonControllerIntegration {
 
         EquilibriumBean eqb = new EquilibriumBean(new Date(), integers.toString(), equilibriumIndices);
 
-//      EquilibriumBean eqb = new EquilibriumBean(new Date(), integers, ce.getEquilibriumIndex(integers));
 	    final long fTime = (System.nanoTime() - iTime) / 1000;
 	    Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
 	     		+ " Duración processArray " + integers 
@@ -97,7 +101,7 @@ public class RestJsonControllerIntegration {
 	}
 
 
-    /**REST PERFORMANCE**/
+    /**REST TEST INTEGRATION AND PERFORMANCE**/
     @GetMapping("/debug/loadtesting/{arraySize}")
     public List<EquilibriumBean> debug(@PathVariable("arraySize") int arraySize) {
     	List<EquilibriumBean> eqbList = new ArrayList<>();

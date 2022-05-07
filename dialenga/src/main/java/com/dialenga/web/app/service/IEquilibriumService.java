@@ -11,4 +11,6 @@ public interface IEquilibriumService {
 
 	List<EquilibriumBean> getAll();
 
+	List<EquilibriumBean> getAllequilibriumIndex();
+
 }

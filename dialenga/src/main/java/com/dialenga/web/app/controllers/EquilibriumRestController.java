@@ -28,10 +28,13 @@ import com.dialenga.web.app.service.IEquilibriumService;
 @CrossOrigin(origins="*")
 public class EquilibriumRestController {
 	
+	private static final String NO_EQ_INDEX = "No tiene";
+	
 	@Autowired 
 	private IEquilibriumService service;
+	
     
-    @GetMapping("equilibrium/{param}")
+    @GetMapping("equilibriumindex/find/{param}")
     public ResponseEntity<List<EquilibriumBean>> getEquilibriumParallel(@PathVariable("param") String param) {
     	final long iTime = System.nanoTime();
     	try {
@@ -58,21 +61,36 @@ public class EquilibriumRestController {
     }
     
     
-    @GetMapping("equilibrium/getallequilibriumindex")
+    @GetMapping("get/all")
     public ResponseEntity<List<EquilibriumBean>> getAllEquilibriumIndex() {
     	try {
-    		List<EquilibriumBean> eqbList = service.getAll();
+    		List<EquilibriumBean> eqbList = service.getAllequilibriumIndex();
    		 	if (eqbList.isEmpty()) {
    		 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
    		 	}
 
-   		 	return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+   		 	return new ResponseEntity<>(eqbList, HttpStatus.OK);
 		} catch (Exception e) {
 			Logger.getGlobal().warning(e.getMessage());
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
     
+    
+    @GetMapping("get/equilibriumindex")
+    public ResponseEntity<List<EquilibriumBean>> getAll() {
+    	try {
+    		List<EquilibriumBean> eqbList = service.getAll();
+   		 	if (eqbList.isEmpty()) {
+   		 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+   		 	}
+
+   		 	return new ResponseEntity<>(eqbList, HttpStatus.OK);
+		} catch (Exception e) {
+			Logger.getGlobal().warning(e.getMessage());
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    }
     
     private EquilibriumBean processArray(String array) {
         List<Integer> integers = Collections.synchronizedList(Arrays.asList(
@@ -82,11 +100,18 @@ public class EquilibriumRestController {
         			.collect(Collectors.toList()));
         IFindIndexEquilibrium feq = new FindIndexEquilibrium();
         List<IndexDataBean> idb = feq.getEquilibriumIndex(integers);
-        String equilibriumIndices = idb.stream().map(i->String.valueOf(i.getEquilibriumIndex())).collect(Collectors.joining(","));
-
-        EquilibriumBean eqb = new EquilibriumBean(new Date(), integers.toString(), equilibriumIndices);
-
-        return eqb;
+        
+        return buidlEquilibriumBean(integers, idb);
 	}
 
+    private EquilibriumBean buidlEquilibriumBean(List<Integer> integers, List<IndexDataBean> idb) {
+		if (idb.isEmpty()) {
+			return new EquilibriumBean(new Date(), integers.toString(), NO_EQ_INDEX);
+		} else {
+	        String equilibriumIndices = idb.stream()
+	        		.map(i->String.valueOf(i.getEquilibriumIndex()))
+	        		.collect(Collectors.joining(","));
+	        return new EquilibriumBean(new Date(), integers.toString(), equilibriumIndices);
+		}
+	}
 }
