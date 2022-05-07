@@ -58,7 +58,7 @@ public class EquilibriumRestController {
     }
     
     
-    @GetMapping("equilibrium/getall")
+    @GetMapping("equilibrium/getallequilibriumindex")
     public ResponseEntity<List<EquilibriumBean>> getAllEquilibriumIndex() {
     	try {
     		List<EquilibriumBean> eqbList = service.getAll();
