@@ -37,7 +37,7 @@ public class EquilibriumService implements IEquilibriumService {
 		// lo más rápido para la prueba es buscar todas y filtrar despues...
 		return crudRepository.findAll().parallelStream()
 				.filter(e -> !e.getEquilibriumIndices().contains(NO_EQ_INDEX)
-						|| e.getEquilibriumIndices().isBlank())
+						|| !e.getEquilibriumIndices().isBlank())
 				.collect(Collectors.toList());
 	}
 	
