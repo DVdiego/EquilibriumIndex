@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 //@DataJpaTest
 //@Import(JpaContext.class)
-@WebMvcTest(controllers = RestJsonController.class )
-class RestJsonControllerTests {
+@WebMvcTest(controllers = RestJsonDebugController.class )
+class RestJsonDebugControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -39,7 +39,7 @@ class RestJsonControllerTests {
 		String response = mockMvc.perform(get("/json/equilibrium/{param}", "-7,1,5,2,-4|3,0")
 				.contentType("application/json"))
 					.andReturn().getResponse().getContentAsString();
-		assertTrue(response.contains(RestJsonController.ERROR));
+		assertTrue(response.contains(RestJsonDebugController.ERROR));
 	}
 
 
@@ -47,7 +47,7 @@ class RestJsonControllerTests {
 	void whenValidInput_thenReturnsEquilibriumBeanListToString() throws Exception {
 		final String lista = "-7,1,5,2,-4,3,0";
 		ObjectMapper objectMapper = new ObjectMapper();
-		RestJsonController rest =  new RestJsonController();
+		RestJsonDebugController rest =  new RestJsonDebugController();
 		String response = mockMvc.perform(get("/json/equilibrium/{param}", "-7,1,5,2,-4,3,0")
 				.contentType("application/json"))
 				.andReturn().getResponse().getContentAsString();
@@ -67,7 +67,7 @@ class RestJsonControllerTests {
 	void whenValidInput_thenReturnsEquilibriumBeanListToStringHasOneEquilibriumIndex() throws Exception {
 		final String lista = "2, 9, 3, 4, 0, 3, 3, 2, 9, 1";
 		ObjectMapper objectMapper = new ObjectMapper();
-		RestJsonController rest =  new RestJsonController();
+		RestJsonDebugController rest =  new RestJsonDebugController();
 		String response = mockMvc.perform(get("/json/equilibrium/{param}", "2, 9, 3, 4, 0, 3, 3, 2, 9, 1")
 				.contentType("application/json"))
 				.andReturn().getResponse().getContentAsString();

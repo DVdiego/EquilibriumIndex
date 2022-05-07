@@ -14,26 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dialenga.web.app.core.CalculateEquilibrium;
+import com.dialenga.web.app.core.FindIndexEquilibrium;
+import com.dialenga.web.app.core.IFindIndexEquilibrium;
 import com.dialenga.web.app.models.EquilibriumBean;
 import com.dialenga.web.app.models.IndexDataBean;
-import com.dialenga.web.app.service.EquilibriumService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping(path="/json", produces="application/json")
 @CrossOrigin(origins="*")
-public class RestJsonController {
+public class RestJsonDebugController {
 	
 	public static final String ERROR = "EquilibriumIndexError: ";
 	private ObjectMapper objectMapper = new ObjectMapper();
-	
-//	@Autowired
-//	private IFindEquilibrium feq = new FindEquilibrium();
-	
-	//@Autowired 
-	private EquilibriumService service = new EquilibriumService();
-    
+	    
     @GetMapping("equilibrium/{param}")
     public String getEquilibriumParallel(@PathVariable("param") String param) {
     	final long iTime = System.nanoTime();
@@ -62,13 +56,6 @@ public class RestJsonController {
     }
     
     
-//    @GetMapping("equilibrium/getall")
-//    public List<EquilibriumBean> getAllEquilibriumIndex() {
-//    	return service.getAll();
-//
-//    }
-    
-    
     public List<EquilibriumBean> getEquilibriumOnebyOne(@PathVariable("param") String param) {
     	final long iTime = System.nanoTime();
     	try {
@@ -88,25 +75,25 @@ public class RestJsonController {
     }
     
     private EquilibriumBean processArray(String array) {
-//        final long iTime = System.nanoTime();
+        final long iTime = System.nanoTime();
         List<Integer> integers = Collections.synchronizedList(Arrays.asList(
         		array.split(",")).stream()
         			.map(String::trim)
         			.map(Integer::valueOf)
         			.collect(Collectors.toList()));
-        CalculateEquilibrium feq = new CalculateEquilibrium();
+        IFindIndexEquilibrium feq = new FindIndexEquilibrium();
         List<IndexDataBean> idb = feq.getEquilibriumIndex(integers);
         String equilibriumIndices = idb.stream().map(i->String.valueOf(i.getEquilibriumIndex())).collect(Collectors.joining(","));
 
         EquilibriumBean eqb = new EquilibriumBean(new Date(), integers.toString(), equilibriumIndices);
 
 //      EquilibriumBean eqb = new EquilibriumBean(new Date(), integers, ce.getEquilibriumIndex(integers));
-//      final long fTime = (System.nanoTime() - iTime) / 1000;
-//      Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
-//        		+ " Duración processArray " + integers 
-//        		+ "to get index equilibrium() microsec = " + fTime 
-//        		+ " -> ms = " + fTime / 1000);
-        return eqb;
+	    final long fTime = (System.nanoTime() - iTime) / 1000;
+	    Logger.getGlobal().info(()-> "Hilo -> " + Thread.currentThread().getId() 
+	     		+ " Duración processArray " + integers 
+	    		+ "to get index equilibrium() microsec = " + fTime 
+	    		+ " -> ms = " + fTime / 1000);
+	    return eqb;
 	}
 
 

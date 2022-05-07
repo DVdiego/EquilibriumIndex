@@ -7,14 +7,15 @@ import java.util.stream.Collectors;
 
 import com.dialenga.web.app.models.IndexDataBean;
 
-public class CalculateEquilibrium {
+public class FindIndexEquilibrium implements IFindIndexEquilibrium {
 
 
-	public CalculateEquilibrium() {
+	public FindIndexEquilibrium() {
 		super();
 	}
 
 
+	@Override
 	public List<IndexDataBean> getEquilibriumIndex(List<Integer> array) {
 
 		AtomicInteger position = new AtomicInteger();

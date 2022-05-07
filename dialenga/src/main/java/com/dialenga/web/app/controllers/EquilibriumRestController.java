@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dialenga.web.app.core.CalculateEquilibrium;
+import com.dialenga.web.app.core.FindIndexEquilibrium;
+import com.dialenga.web.app.core.IFindIndexEquilibrium;
 import com.dialenga.web.app.models.EquilibriumBean;
 import com.dialenga.web.app.models.IndexDataBean;
 import com.dialenga.web.app.service.IEquilibriumService;
@@ -27,8 +28,6 @@ import com.dialenga.web.app.service.IEquilibriumService;
 @CrossOrigin(origins="*")
 public class EquilibriumRestController {
 	
-//	@Autowired
-//	private IFindEquilibrium feq = new FindEquilibrium();
 	
 	@Autowired 
 	private IEquilibriumService service;
@@ -82,7 +81,7 @@ public class EquilibriumRestController {
         			.map(String::trim)
         			.map(Integer::valueOf)
         			.collect(Collectors.toList()));
-        CalculateEquilibrium feq = new CalculateEquilibrium();
+        IFindIndexEquilibrium feq = new FindIndexEquilibrium();
         List<IndexDataBean> idb = feq.getEquilibriumIndex(integers);
         String equilibriumIndices = idb.stream().map(i->String.valueOf(i.getEquilibriumIndex())).collect(Collectors.joining(","));
 

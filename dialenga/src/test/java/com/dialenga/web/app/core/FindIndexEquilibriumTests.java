@@ -14,9 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.dialenga.web.app.models.IndexDataBean;
 
 @SpringBootTest
-class CalculateEquilibriumTests {
+class FindIndexEquilibriumTests {
 
-	CalculateEquilibrium ce = new CalculateEquilibrium();
+	FindIndexEquilibrium ce = new FindIndexEquilibrium();
 
 	@Test
 	public void getEquilibriumIndex() {

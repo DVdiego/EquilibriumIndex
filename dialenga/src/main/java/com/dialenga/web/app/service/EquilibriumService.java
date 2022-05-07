@@ -12,15 +12,19 @@ import com.dialenga.web.app.repository.EquilibriumRepository;
 public class EquilibriumService implements IEquilibriumService {
 
 	@Autowired
-	private EquilibriumRepository repository;
+	private EquilibriumRepository crudRepository;
 	
+	public EquilibriumService(EquilibriumRepository repository) {
+		this.crudRepository = repository;
+	}
+
 	@Override
 	public long save(EquilibriumBean eqb) {
-		return repository.save(eqb).getId();
+		return crudRepository.save(eqb).getId();
 	}
 	
 	@Override
 	public List<EquilibriumBean> getAll() {
-		return repository.findAll();
+		return crudRepository.findAll();
 	}
 }
