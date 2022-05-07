@@ -12,7 +12,6 @@ import com.dialenga.web.app.repository.EquilibriumRepository;
 @Service
 public class EquilibriumService implements IEquilibriumService {
 
-	private static final String NO_EQ_INDEX = "No tiene";
 	
 	@Autowired
 	private EquilibriumRepository crudRepository;
@@ -36,8 +35,7 @@ public class EquilibriumService implements IEquilibriumService {
 	public List<EquilibriumBean> getAllequilibriumIndex() {
 		// lo más rápido para la prueba es buscar todas y filtrar despues...
 		return crudRepository.findAll().parallelStream()
-				.filter(e -> !e.getEquilibriumIndices().contains(NO_EQ_INDEX)
-						|| !e.getEquilibriumIndices().isBlank())
+				.filter(e -> !e.getEquilibriumIndices().isBlank())
 				.collect(Collectors.toList());
 	}
 	

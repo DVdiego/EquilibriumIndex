@@ -28,8 +28,6 @@ import com.dialenga.web.app.service.IEquilibriumService;
 @CrossOrigin(origins="*")
 public class EquilibriumRestController {
 	
-	private static final String NO_EQ_INDEX = "No tiene";
-	
 	@Autowired 
 	private IEquilibriumService service;
 	
@@ -61,7 +59,7 @@ public class EquilibriumRestController {
     }
     
     
-    @GetMapping("get/all")
+    @GetMapping("get/equilibriumindex")
     public ResponseEntity<List<EquilibriumBean>> getAllEquilibriumIndex() {
     	try {
     		List<EquilibriumBean> eqbList = service.getAllequilibriumIndex();
@@ -77,7 +75,7 @@ public class EquilibriumRestController {
     }
     
     
-    @GetMapping("get/equilibriumindex")
+    @GetMapping("get/all")
     public ResponseEntity<List<EquilibriumBean>> getAll() {
     	try {
     		List<EquilibriumBean> eqbList = service.getAll();
@@ -106,7 +104,7 @@ public class EquilibriumRestController {
 
     private EquilibriumBean buidlEquilibriumBean(List<Integer> integers, List<IndexDataBean> idb) {
 		if (idb.isEmpty()) {
-			return new EquilibriumBean(new Date(), integers.toString(), NO_EQ_INDEX);
+			return new EquilibriumBean(new Date(), integers.toString(), "");
 		} else {
 	        String equilibriumIndices = idb.stream()
 	        		.map(i->String.valueOf(i.getEquilibriumIndex()))

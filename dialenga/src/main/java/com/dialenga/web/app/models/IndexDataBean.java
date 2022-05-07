@@ -11,15 +11,6 @@ public class IndexDataBean {
 	private int sumRight;
 	private List<Integer> left = Collections.synchronizedList(new  ArrayList<>());
 	private List<Integer> right = Collections.synchronizedList(new  ArrayList<>());
-
-//	public IndexDataBean(int index, List<Integer> left, List<Integer> right) {
-//		super();
-//		this.index = index;
-//		this.left.addAll(left);
-//		this.right.addAll(right);
-//		this.sumLeft = this.left.parallelStream().reduce(0, Integer::sum);
-//		this.sumRight = this.right.parallelStream().reduce(0, Integer::sum);
-//	}
 	
 	public IndexDataBean(int index, int sumLeft, int sumRight, List<Integer> left, List<Integer> right) {
 		super();
@@ -29,8 +20,6 @@ public class IndexDataBean {
 		this.left.addAll(left);
 		this.right.addAll(right);
 	}
-
-
 
 	public int getIndex() {
 		return index;

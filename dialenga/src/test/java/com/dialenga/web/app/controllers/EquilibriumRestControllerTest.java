@@ -27,13 +27,13 @@ class EquilibriumRestControllerTest {
 	
 	@Test
 	void whenValidInput_thenReturns200() throws Exception {
-		mockMvc.perform(get("/api/equilibrium/{param}", "-7,1,5,2,-4,3,0"))
+		mockMvc.perform(get("/api/equilibriumindex/find/{param}", "-7,1,5,2,-4,3,0"))
 		.andExpect(status().isOk());
 	}
 	
 	@Test
 	void whenInvalidInput_thenReturnsError() throws Exception {
-		mockMvc.perform(get("/api/equilibrium/{param}", "-7,1,5,2,-4|3,0"))
+		mockMvc.perform(get("/api/equilibriumindex/find/{param}", "-7,1,5,2,-4|3,0"))
 				.andExpect(status().isBadRequest());
 
 	}
@@ -41,16 +41,26 @@ class EquilibriumRestControllerTest {
 	@Test
 	void testGetEquilibriumParallel() throws Exception {
 		Mockito.when(service.save(new EquilibriumBean())).thenReturn(1L);
-		mockMvc.perform(get("/api/equilibrium/{param}", "-7,1,5,2,-4,3,0"))
+		mockMvc.perform(get("/api/equilibriumindex/find/{param}", "-7,1,5,2,-4,3,0"))
 					.andExpect(status().isOk());
 	}
 
 	@Test
-	void whenListIsEmptyNoContent_testGetAllEquilibriumIndex() throws Exception {
-		List<EquilibriumBean> list = new ArrayList<>();
-		list.add(new EquilibriumBean());
-		Mockito.when(service.getAll()).thenReturn(list);
-		mockMvc.perform(get("/api/equilibrium/getall")).andExpect(status().isOk());
+	void whenListIsEmptyNoContent_testGetAll() throws Exception {
+		mockMvc.perform(get("/api/get/all")).andExpect(status().isNoContent());
 	}
 
+	@Test
+	void whenTableIsNotEmpty_testGetAllEquilibriumIndex() throws Exception {
+		List<EquilibriumBean> list = new ArrayList<>();
+		list.add(new EquilibriumBean());
+		Mockito.when(service.getAllequilibriumIndex()).thenReturn(list);
+		mockMvc.perform(get("/api/get/equilibriumindex")).andExpect(status().isOk());
+	}
+	
+	@Test
+	void whenGetAllEquilibriumIndex_throwException() throws Exception {
+		Mockito.when(service.getAllequilibriumIndex()).thenThrow();
+		mockMvc.perform(get("/api/get/equilibriumindex")).andExpect(status().isInternalServerError());
+	}
 }
